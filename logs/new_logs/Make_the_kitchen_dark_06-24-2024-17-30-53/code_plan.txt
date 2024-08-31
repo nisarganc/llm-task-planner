@@ -1,0 +1,11 @@
+Set of actions required to perform the given task:
+1. GoToObject <robot0><LightSwitch>
+2. SwitchOff <robot0><LightSwitch>
+
+Dependencies between actions: 
+step2 is dependent on step1
+
+Order of execution rules: Based on the action dependencies and the number of robots available. 
+1. robot0 start step1
+2. robot0 wait to finish step1
+3. robot0 start step2

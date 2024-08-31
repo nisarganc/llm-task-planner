@@ -1,0 +1,135 @@
+# TASK DESCIPTION: Turn off the light and turn on the faucet. 
+
+# Environment objects:
+objects = [{'name': 'SaltShaker', 'mass': 1.0}, {'name': 'SoapBottle', 'mass': 5.0}, {'name': 'Bowl', 'mass': 3.0}, {'name': 'CounterTop', 'mass': 2}, {'name': 'Drawer', 'mass': 5}, {'name': 'Vase', 'mass': 1}, {'name': 'Lettuce', 'mass': 5}, {'name': 'Plate', 'mass': 5}, {'name': 'Potato', 'mass': 2}, {'name': 'Pan', 'mass': 5}, {'name': 'Window', 'mass': 4}, {'name': 'Fridge', 'mass': 4}, {'name': 'Sink', 'mass': 5}, {'name': 'Stool', 'mass': 6}, {'name': 'DiningTable', 'mass': 6}, {'name': 'HousePlant', 'mass': 2}, {'name': 'Chair', 'mass': 6}, {'name': 'Cup', 'mass': 3}, {'name': 'Shelf', 'mass': 6}, {'name': 'StoveKnob', 'mass': 3}, {'name': 'ButterKnife', 'mass': 6}, {'name': 'Bread', 'mass': 2}, {'name': 'DishSponge', 'mass': 4}, {'name': 'Floor', 'mass': 4}, {'name': 'PepperShaker', 'mass': 2}, {'name': 'Spatula', 'mass': 2}, {'name': 'StoveBurner', 'mass': 4}, {'name': 'Statue', 'mass': 1}, {'name': 'Kettle', 'mass': 2}, {'name': 'Apple', 'mass': 4}, {'name': 'WineBottle', 'mass': 5}, {'name': 'Knife', 'mass': 6}, {'name': 'GarbageCan', 'mass': 5}, {'name': 'Microwave', 'mass': 5}, {'name': 'LightSwitch', 'mass': 6}, {'name': 'Pot', 'mass': 2}, {'name': 'Egg', 'mass': 3}, {'name': 'Mug', 'mass': 2}, {'name': 'CoffeeMachine', 'mass': 6}, {'name': 'Faucet', 'mass': 6}, {'name': 'Tomato', 'mass': 4}, {'name': 'Spoon', 'mass': 2}, {'name': 'Fork', 'mass': 4.8}, {'name': 'Toaster', 'mass': 1}, {'name': 'Book', 'mass': 6}, {'name': 'SinkBasin', 'mass': 6}, {'name': 'Cabinet', 'mass': 1}, {'name': 'ShelvingUnit', 'mass': 3}]
+# Available robots:
+robots = [{'name': 'robot0', 'no_skills': 9, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'SliceObject', 'DropHandObject', 'ThrowObject', 'PushObject', 'PullObject'],'mass': 2}, {'name': 'robot1', 'no_skills': 13, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'SliceObject', 'PickupObject', 'PutObject', 'SwitchOn', 'SwitchOff', 'DropHandObject', 'ThrowObject', 'PushObject', 'PullObject'],'mass': 2}]
+
+# Independent SubTasks:
+# SubTask 1: Turn off the light. (Skills Required: GoToObject, SwitchOff)
+# SubTask 2: Turn on the faucet. (Skills Required: GoToObject, SwitchOff)
+# We can perform SubTask 1 and SubTask 2 in parallel.
+
+# Task allocation solution:
+# robot0 has 9 skills, while robot1 has 13 skills. Robots do not have same number of skills (no_skills) and don't share the same set of skills.
+# The first SubTask, 'Turn off the light' can be performed by any robot with 'GoToObject' and 'SwitchOff' skills. In this case, robot1 has all these skills. There is no need to address mass capacity as there are no ObjectHandlingSkills in this SubTask.
+# The second SubTask, 'Turn on the faucet' can be performed by any robot with 'GoToObject' and 'SwitchOff' skills. In this case, robot1 has all these skills.  There is no need to address mass capacity as there are no ObjectHandlingSkills in this SubTask.
+# The two SubTasks can be executed in parallel but the same robot, i.e, robot1 cannot do both the SubTasks in parallel. Hence serialize the SubTasks and perform them one after the other using robot2. 
+
+# Task allocation code:
+def turn_off_light(robot_list):
+    # 0: SubTask 1: Turn off the light
+    # 1: Go to the LightSwitch using robot1.
+    simulate.GoToObject(robot_list[1], 'LightSwitch')
+    # 2: Switch off the LightSwitch using robot1.
+    simulate.SwitchOff(robot_list[1], 'LightSwitch')
+
+def turn_on_faucet(robot_list):
+    # 0: SubTask 1: Turn on the faucet
+    # 1: Go to the Faucet using robot1.
+    simulate.GoToObject(robot_list[1], 'Faucet')
+    # 2: Switch on the Faucet using robot1.
+    simulate.SwitchOn(robot_list[1], 'Faucet')
+
+# Perform SubTask 1 and then SubTask 2
+turn_off_light(robots)
+turn_on_faucet(robots)
+
+# Task, 'turn off the light' is done.
+
+#########################################################################################################
+
+# TASK DESCIPTION: Slice the Potato.
+
+# Environment objects:
+objects = [{'name': 'SaltShaker', 'mass': 1.0}, {'name': 'SoapBottle', 'mass': 5.0}, {'name': 'Bowl', 'mass': 3.0}, {'name': 'CounterTop', 'mass': 2}, {'name': 'Drawer', 'mass': 5}, {'name': 'Vase', 'mass': 1}, {'name': 'Lettuce', 'mass': 5}, {'name': 'Plate', 'mass': 5}, {'name': 'Potato', 'mass': 2}, {'name': 'Pan', 'mass': 5}, {'name': 'Window', 'mass': 4}, {'name': 'Fridge', 'mass': 4}, {'name': 'Sink', 'mass': 5}, {'name': 'Stool', 'mass': 6}, {'name': 'DiningTable', 'mass': 6}, {'name': 'HousePlant', 'mass': 2}, {'name': 'Chair', 'mass': 6}, {'name': 'Cup', 'mass': 3}, {'name': 'Shelf', 'mass': 6}, {'name': 'StoveKnob', 'mass': 3}, {'name': 'ButterKnife', 'mass': 6}, {'name': 'Bread', 'mass': 2}, {'name': 'DishSponge', 'mass': 4}, {'name': 'Floor', 'mass': 4}, {'name': 'PepperShaker', 'mass': 2}, {'name': 'Spatula', 'mass': 2}, {'name': 'StoveBurner', 'mass': 4}, {'name': 'Statue', 'mass': 1}, {'name': 'Kettle', 'mass': 2}, {'name': 'Apple', 'mass': 4}, {'name': 'WineBottle', 'mass': 5}, {'name': 'Knife', 'mass': 6}, {'name': 'GarbageCan', 'mass': 5}, {'name': 'Microwave', 'mass': 5}, {'name': 'LightSwitch', 'mass': 6}, {'name': 'Pot', 'mass': 2}, {'name': 'Egg', 'mass': 3}, {'name': 'Mug', 'mass': 2}, {'name': 'CoffeeMachine', 'mass': 6}, {'name': 'Faucet', 'mass': 6}, {'name': 'Tomato', 'mass': 4}, {'name': 'Spoon', 'mass': 2}, {'name': 'Fork', 'mass': 4.8}, {'name': 'Toaster', 'mass': 1}, {'name': 'Book', 'mass': 6}, {'name': 'SinkBasin', 'mass': 6}, {'name': 'Cabinet', 'mass': 1}, {'name': 'ShelvingUnit', 'mass': 3}]
+# Available robots:
+robots = [{'name': 'robot1', 'no_skills': 5, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'SliceObject'],'mass': 2}, {'name': 'robot2', 'no_skills': 10, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'SwitchOn', 'SwitchOff', 'DropHandObject', 'ThrowObject', 'PushObject', 'PullObject'],'mass': 2}, {'name': 'robot3', 'no_skills': 7, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'PickupObject', 'PutObject', 'DropHandObject'],'mass': 6}]
+
+# Independent SubTasks:
+# SubTask 1: Slice the Potato. (Skills Required: GoToObject, PickupObject, SliceObject, PutObject)
+# We can execute SubTask 1 first.
+
+# Task allocation solution:
+# robot0 has 5 skills, while robot1 has 10 and robot2 has 7 skills. Robots do not have same number of skills (no_skills) and don't share the same set of skills.
+# The first and only main SubTask, 'Slice the Potato' can be performed by any robot with 'GoToObject', 'PickupObject', 'SliceObject', and 'PutObject' skills. However, no individual robot has all these skills. We address the skill gap problem by forming a team of robots that posses all 4 skills. Team of robot0 and robot2 have all the skills required where robot0 has the 'SliceObject' skill and robot2 has the 'GoToObject', 'PickupObject', and 'PutObject' skills. There is a need to address mass capacity as there is a skill, 'PickupObject' belonging to ObjectHandlingSkills set. This skill is performed on the object, 'Knife', whose mass capacity is 6. The robot2 with that skill has mass capacity greater or equal to the mass of Knife. Hence robot2 can be allocated to team of robots to perform this SubTask.
+
+# Task allocation code:
+def slice_potato(robot_list):
+    # 0: SubTask 1: Slice the Potato
+    # 1: Go to the Knife using robot2.
+    simulate.GoToObject(robot_list[2], 'Knife')
+    # 2: Pick up the Knife using robot2.
+    simulate.PickupObject(robot_list[2], 'Knife')
+    # 3: Go to the Potato using robot2.
+    simulate.GoToObject(robot_list[2], 'Potato')
+    # 4: Slice the Potato using robot0.
+    simulate.SliceObject(robot_list[0], 'Potato')
+    # 5: Go to the countertop using robot2.
+    simulate.GoToObject(robot_list[2], 'CounterTop')
+    # 6: Put the Knife back on the CounterTop using robot2.
+    simulate.PutObject(robot_list[2], 'Knife', 'CounterTop')
+
+# Execute SubTask 1
+slice_potato(robots)
+
+# Task, 'fry sliced potato' is done.
+
+#########################################################################################################
+
+# TASK DESCIPTION: Throw the fork and spoon in the trash.
+
+# Environment objects:
+objects = [{'name': 'SaltShaker', 'mass': 1.0}, {'name': 'SoapBottle', 'mass': 5.0}, {'name': 'Bowl', 'mass': 3.0}, {'name': 'CounterTop', 'mass': 2}, {'name': 'Drawer', 'mass': 5}, {'name': 'Vase', 'mass': 1}, {'name': 'Lettuce', 'mass': 5}, {'name': 'Plate', 'mass': 5}, {'name': 'Potato', 'mass': 2}, {'name': 'Pan', 'mass': 5}, {'name': 'Window', 'mass': 4}, {'name': 'Fridge', 'mass': 4}, {'name': 'Sink', 'mass': 5}, {'name': 'Stool', 'mass': 6}, {'name': 'DiningTable', 'mass': 6}, {'name': 'HousePlant', 'mass': 2}, {'name': 'Chair', 'mass': 6}, {'name': 'Cup', 'mass': 3}, {'name': 'Shelf', 'mass': 6}, {'name': 'StoveKnob', 'mass': 3}, {'name': 'ButterKnife', 'mass': 6}, {'name': 'Bread', 'mass': 2}, {'name': 'DishSponge', 'mass': 4}, {'name': 'Floor', 'mass': 4}, {'name': 'PepperShaker', 'mass': 2}, {'name': 'Spatula', 'mass': 2}, {'name': 'StoveBurner', 'mass': 4}, {'name': 'Statue', 'mass': 1}, {'name': 'Kettle', 'mass': 2}, {'name': 'Apple', 'mass': 4}, {'name': 'WineBottle', 'mass': 5}, {'name': 'Knife', 'mass': 6}, {'name': 'GarbageCan', 'mass': 5}, {'name': 'Microwave', 'mass': 5}, {'name': 'LightSwitch', 'mass': 6}, {'name': 'Pot', 'mass': 2}, {'name': 'Egg', 'mass': 3}, {'name': 'Mug', 'mass': 2}, {'name': 'CoffeeMachine', 'mass': 6}, {'name': 'Faucet', 'mass': 6}, {'name': 'Tomato', 'mass': 4}, {'name': 'Spoon', 'mass': 2.0}, {'name': 'Fork', 'mass': 4.8}, {'name': 'Toaster', 'mass': 1}, {'name': 'Book', 'mass': 6}, {'name': 'SinkBasin', 'mass': 6}, {'name': 'Cabinet', 'mass': 1}, {'name': 'ShelvingUnit', 'mass': 3}]
+# Available robots:
+robots = [{'name': 'robot0', 'no_skills': 13, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'SliceObject', 'PickupObject', 'PutObject', 'SwitchOn', 'SwitchOff', 'DropHandObject', 'ThrowObject', 'PushObject', 'PullObject'],'mass': 3.2}, {'name': 'robot1', 'no_skills': 13, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'SliceObject', 'PickupObject', 'PutObject', 'SwitchOn', 'SwitchOff', 'DropHandObject', 'ThrowObject', 'PushObject', 'PullObject'],'mass': 2.0}, {'name': 'robot2', 'no_skills': 13, 'skills': ['GoToObject', 'OpenObject', 'CloseObject', 'BreakObject', 'SliceObject', 'PickupObject', 'PutObject', 'SwitchOn', 'SwitchOff', 'DropHandObject', 'ThrowObject', 'PushObject', 'PullObject'],'mass': 2.0}]
+
+# Independent SubTasks:
+# SubTask 1: Throw the Fork in the trash. (Skills Required: GoToObject, PickupObject, ThrowObject)
+# SubTask 2: Throw the Spoon in the trash. (Skills Required: GoToObject, PickupObject, ThrowObject)
+# We can execute SubTask 1 and SubTask 2 in parallel.
+
+# Task allocation solution:
+# robot0, robot1 and robot2 have 13 skills. Robots have same number of skills (no_skills) and share the same set of skills.
+# The first SubTask, 'Throw the Fork in the trash' can be performed by any robots: robot0, robot1, or robot2. There is a need to address mass capacity as there are skills, 'PickupObject' and 'ThrowObject' belonging to ObjectHandlingSkills set. These skills are performed on the object, 'Fork', whose mass capacity is 4.8. However, no individual robot has mass capacity greater or equal to 4.8. We address the mass capacity problem by forming a team of robots that posses collective mass capacity of 4.8 or greater. robot0 and robot1 have the collective mass capacity required.
+# The first SubTask, 'Throw the Spoon in the trash' can be performed by any robots: robot9, robot1, or robot2. There is a need to address mass capacity as there are skills, 'PickupObject' and 'ThrowObject' belonging to ObjectHandlingSkills set. These skills are performed on the object, 'Spoon', whose mass capacity is 2.0. Hence the SubTask can be performed by any robot with mass capacity greater than or equal to 2.0. In this case since robot3 is free and has a mass capacity = 2.0, this SubTask is assigned to robot2.
+# The two SubTasks can be executed in parallel with robot0 and robot1 allocated to SubTask 1 and robot2 allocated to SubTask 2.
+
+# Task allocation code:
+def throw_fork_in_trash(robot_list):
+    # 0: SubTask 1: Throw the Fork in the trash
+    # 1: Go to the Fork using robot0 and robot1 together.
+    simulate.GoToObject([robot_list[0], robot_list[1]], 'Fork')
+    # 2: Pick up the Fork using robot0 and robot1 together.
+    simulate.PickupObject([robot_list[0], robot_list[1]], 'Fork')
+    # 3: Go to the GarbageCan using robot0 and robot1 together.
+    simulate.GoToObject([robot_list[0], robot_list[1]], 'GarbageCan')
+    # 4: Throw the Fork in the GarbageCan using robot0 and robot1 together.
+    simulate.ThrowObject([robot_list[0], robot_list[1]], 'Fork', 'GarbageCan')
+
+def throw_spoon_in_trash(robot_list):
+    # 0: SubTask 2: Throw the Spoon in the trash
+    # 1: Go to the Spoon using robot2.
+    simulate.GoToObject(robot_list[2], 'Spoon')
+    # 2: Pick up the Spoon using robot2.
+    simulate.PickupObject(robot_list[2], 'Spoon')
+    # 3: Go to the GarbageCan using robot2.
+    simulate.GoToObject(robot_list[2], 'GarbageCan')
+    # 4: Throw the Spoon in the GarbageCan using robot2.
+    simulate.ThrowObject(robot_list[2], 'Spoon', 'GarbageCan')
+
+# Perform SubTask 1 and SubTask 2 in parallel
+task1_thread = threading.Thread(target=throw_fork_in_trash, args=(robots,))
+task2_thread = threading.Thread(target=throw_spoon_in_trash, args=(robots,))
+
+# Start executing SubTask 1 and SubTask 2
+task1_thread.start()
+task2_thread.start()
+
+# Wait for both SubTask 1 and SubTask 2 to finish
+task1_thread.join()
+task2_thread.join()
+
+# Task, 'Throw the fork and spoon in the trash' is done.
+
+#########################################################################################################

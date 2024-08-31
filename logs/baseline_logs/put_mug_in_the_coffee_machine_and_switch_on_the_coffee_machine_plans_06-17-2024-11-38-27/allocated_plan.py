@@ -1,0 +1,6 @@
+# Robot 1, 2 and 3 have different skills. All robots do not have same number of skills.
+# All the robots DONOT share the same set and number of skills (no_skills) & all objects DONOT have same mass. In this case where all robots have different sets of skills and all objects have different mass - Focus on Task Allocation based on Robot Skills alone. 
+# Analyze the skills required for each subtask and the skills each robot possesses. In this scenario, we have two main subtasks: 'Put mug in the coffee machine' and 'Switch on the coffee machine'.
+# For the 'Put mug in the coffee machine' subtask, it can be performed by any robot with 'GoToObject', 'PickupObject', and 'PutObject' skills. In this case, Robots 1 has all these skills.
+# For the 'Switch on the coffee machine' subtask, it can be performed by any robot with 'GoToObject', and 'SwitchOn' skills. In this case, Robots 3 has all these skills.
+# No teams are required since SubTasks can be performed with individual robots as explained above. The 'Put mug in the coffee machine' subtask is assigned to Robots 1. The 'Switch on the coffee machine' subtask is assigned to Robots 3.

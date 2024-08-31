@@ -1,0 +1,35 @@
+Set of actions required to perform the given task:
+1. GoToObject <robot><Lettuce>
+2. PickupObject <robot><Lettuce>
+3. GoToObject <robot><Knife>
+4. PickupObject <robot><Knife>
+5. SliceObject <robot><Lettuce>
+6. DropHandObject <robot><Knife>
+7. GoToObject <robot><Mug>
+8. PickupObject <robot><Mug>
+9. GoToObject <robot><GarbageCan>
+10. PutObject <robot><Mug><GarbageCan>
+11. GoToObject <robot><LightSwitch>
+12. SwitchOff <robot><LightSwitch>
+
+Dependencies between actions: 
+step1 is independent of all other steps
+step2 is dependent on step1
+step3 is independent of all other steps
+step4 is dependent on step3
+step5 is dependent on step2 and step4
+step6 is dependent on step5
+step7 is independent of all other steps
+step8 is dependent on step7
+step9 is independent of all other steps
+step10 is dependent on step8 and step9
+step11 is independent of all other steps
+step12 is dependent on step11
+
+Order of execution rules: Based on the action dependencies and the number of robots available. 
+1. robot0 start step1, robot1 start step3, robot2 start step7
+2. robot0 wait to finish step1 and start step2, robot1 wait to finish step3 and start step4, robot2 wait to finish step7 and start step8
+3. robot0 and robot1 wait to finish step2 and step4 respectively and start step5, robot2 start step9
+4. robot0 and robot1 wait to finish step5 and start step6, robot2 wait to finish step8 and step9 and start step10
+5. robot0 start step11
+6. robot0 wait to finish step11 and start step12

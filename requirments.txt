@@ -1,0 +1,4 @@
+typeguard
+openai==0.28
+ai2thor
+scipy
